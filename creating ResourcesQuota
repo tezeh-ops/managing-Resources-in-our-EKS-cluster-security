@@ -1,4 +1,8 @@
 #Resource Quota
+# If we launch a pod in a NameSpace where we have create our R-Q, if we do request resources for that pod it will not get created.
+# WE have to request resources when craeting out pod. BUT IF WE DON"T want to do that wer cant creat our LIMITRang in that NameSpace as well just to say if not requested
+# the pod should assume the default limitRang setup and the pod will be created
+
 apiVersion: v1
 kind: ResourceQuota
 metadata:
@@ -12,6 +16,13 @@ spec:
    limits.memory: "4Gi"                    #  What ever is specified here we can't use more that it
    pods: "2"                              #
    count/deployments.apps: "1"               # //
+
+
+# Creating a LImitRange is to say if i launge a pod and i didn't specify the request resources or limit,
+# let that pod assume the default limit set below
+
+
+
 ---
 -# LimitRange
 apiVersion: v1
