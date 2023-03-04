@@ -1,0 +1,21 @@
+# CReating Network policy between two pod application and tha db-pod
+
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: mongodb-network-pol
+  namespace: test
+spec:
+  podSelector:
+    matchLabels:
+      app: mongodb
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app: springapp   # saying here that our sprinapp is abler to comunicate with the mongodb
+      ports:
+        - protocol: TCP
+          port: 27017  
