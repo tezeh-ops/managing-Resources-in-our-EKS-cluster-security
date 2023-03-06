@@ -1,0 +1,27 @@
+# Please edit the object below. Lines beginning with a '#' will be ignored,
+# and an empty file will abort the edit. If an error occurs while saving this file will be
+# reopened with the relevant failures.
+#
+# configmaps "aws-auth" was not valid:
+# * <nil>: Invalid value: "The edited file failed validation": ValidationError(ConfigMap.data.mapUsers): invalid type for io.k8s.api.core.v1.ConfigMap.data: got "array", expected "string"
+#
+apiVersion: v1
+data:
+  mapRoles: |
+    - groups:
+      - system:bootstrappers
+      - system:nodes
+      rolearn: arn:aws:iam::457668643577:role/worker-node-IAMaccess
+      username: system:node:{{EC2PrivateDNSName}}
+  mapUsers: | # WE can mapUsers/mapGroups 
+    - userarn: arn:aws:iam::457668643577:user/munoh    # the user ARN
+      username: munoh                                 # user nmae
+    - userarn: arn:aws:iam::457668643577:user/samuel
+      username: samuel
+kind: ConfigMap
+metadata:
+  creationTimestamp: "2023-03-05T06:33:05Z"
+  name: aws-auth
+  namespace: kube-system
+  resourceVersion: "16439"
+  uid: 761bca56-222d-44ca-8456-354b6bb1c8d2
