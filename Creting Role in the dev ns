@@ -1,0 +1,49 @@
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: adminrole
+rules:
+- apiGroups: ["*"]
+  resources: ["*"]
+  verbs: ["*"]
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: amin-access_binding
+subjects:
+- kind: User
+  name: samuel                          # Map with username
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole
+  name: adminrole
+  apiGroup: rbac.authorization.k8s.io
+
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  namespace: dev
+  name: readonly
+rules:
+- apiGroups: [""] # For all the k8s object for deployment with API represented as v1 can be represented as [""]
+  resources: ["pods"]
+  verbs: ["get","list"]  # this user can just read only
+- apiGroups: ["apps"]    # All API represented as V1/apps can be represented as ["apps"]
+  resources: ["deployments","replicasets","daemonsets"]
+  verbs: ["get","list"]  # read access only
+---
+kind: RoleBinding     #Binding the role to a Usre or Group or Service
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: read_access_role_binding
+  namespace: dev
+subjects:
+- kind: User # Kind here can be a Group/User/ServiceAccount
+  name: samuel                          # Map with username
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: readonly
+  apiGroup: rbac.authorization.k8s.io
