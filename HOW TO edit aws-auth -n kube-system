@@ -1,0 +1,5 @@
+mapRoles: |
+  - rolearn: arn:aws:iam::XXXXXXXXXXXX:role/testrole
+    username: testrole
+    groups:
+      - system:masters 
