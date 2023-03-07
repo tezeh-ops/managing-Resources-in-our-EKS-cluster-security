@@ -3,3 +3,4 @@ mapRoles: |
     username: testrole
     groups:
       - system:masters 
+# for more in go to ths link https://aws.amazon.com/premiumsupport/knowledge-center/eks-api-server-unauthorized-error/
