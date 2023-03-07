@@ -1,11 +1,13 @@
+# creating an Autoscaler in our cluster with role and bindings as well
+
 apiVersion: v1
-kind: ServiceAccount
+kind: ServiceAccount  # THe kind is ServiceAccount
 metadata:
   labels:
     k8s-addon: cluster-autoscaler.addons.k8s.io
     k8s-app: cluster-autoscaler
   name: cluster-autoscaler
-  namespace: kube-system
+  namespace: kube-system     #THe namespace is kube-system
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -14,12 +16,12 @@ metadata:
   labels:
     k8s-addon: cluster-autoscaler.addons.k8s.io
     k8s-app: cluster-autoscaler
-rules:
+rules:                                      # THe Roles are what it can do ie
   - apiGroups: [""]
     resources: ["events", "endpoints"]
-    verbs: ["create", "patch"]
+    verbs: ["create", "patch"]              # It can creat nodes, patch nodes
   - apiGroups: [""]
-    resources: ["pods/eviction"]
+    resources: ["pods/eviction"]             #  The following are vwhat it can do
     verbs: ["create"]
   - apiGroups: [""]
     resources: ["pods/status"]
@@ -29,7 +31,7 @@ rules:
     resourceNames: ["cluster-autoscaler"]
     verbs: ["get", "update"]
   - apiGroups: [""]
-    resources: ["nodes"]
+    resources: ["nodes"]                          # role for the nodes
     verbs: ["watch", "list", "get", "update"]
   - apiGroups: [""]
     resources:
@@ -82,7 +84,7 @@ rules:
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
+kind: ClusterRoleBinding                         # BinDinG thev roles
 metadata:
   name: cluster-autoscaler
   labels:
@@ -93,8 +95,8 @@ roleRef:
   kind: ClusterRole
   name: cluster-autoscaler
 subjects:
-  - kind: ServiceAccount
-    name: cluster-autoscaler
+  - kind: ServiceAccount    # Binding the role this cluster serviceAcount su that it now empowered to archieve all the roles set above
+    name: cluster-autoscaler   
     namespace: kube-system
 
 ---
@@ -115,8 +117,8 @@ subjects:
     name: cluster-autoscaler
     namespace: kube-system
 ---
----
-apiVersion: apps/v1
+---                 # DEPLOYING our autoscaler application that will be checking our cluster in case the load is more what the node can carry it will autoscale the node or pods
+apiVersion: apps/v1    # So it will be acting as out watch man for our application
 kind: Deployment
 metadata:
   name: cluster-autoscaler
