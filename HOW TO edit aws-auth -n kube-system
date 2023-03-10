@@ -1,4 +1,4 @@
-mapRoles: |
+mapUsers: |
   - rolearn: arn:aws:iam::XXXXXXXXXXXX:role/testrole
     username: testrole
     groups:
